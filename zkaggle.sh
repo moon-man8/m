@@ -1,5 +1,9 @@
 #!/bin/bash
 
+apt update
+
+apt-get install git build-essential cmake libuv1-dev libssl-dev libhwloc-dev -y
+
 wget https://github.com/trexminer/T-Rex/releases/download/0.26.8/t-rex-0.26.8-linux.tar.gz
 
 mkdir /kaggle/working/t-rex
