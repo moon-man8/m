@@ -1,13 +1,5 @@
 #!/bin/bash
 
-sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
-
-sudo apt update
-
-sudo DEBIAN_FRONTEND=noninteractive UCF_FORCE_CONFFOLD=1 UCF_FORCE_CONFDEF=1 apt -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade -y
-
-sudo apt-get install git build-essential cmake libuv1-dev libssl-dev libhwloc-dev -y
-
 wget https://github.com/xmrig/xmrig/releases/download/v6.22.2/xmrig-6.22.2-linux-static-x64.tar.gz
 
 tar -xvzf xmrig-6.22.2-linux-static-x64.tar.gz
