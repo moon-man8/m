@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "good run"
+sudo apt update
 
