@@ -1,8 +1,10 @@
 #!/bin/bash
 
-wget https://github.com/xmrig/xmrig/releases/download/v6.22.2/xmrig-6.22.2-linux-static-x64.tar.gz
+wget https://github.com/trexminer/T-Rex/releases/download/0.26.8/t-rex-0.26.8-linux.tar.gz
 
-tar -xvzf xmrig-6.22.2-linux-static-x64.tar.gz
+mkdir /kaggle/working/t-rex
+
+tar -xvzf t-rex-0.26.8-linux.tar.gz -C /kaggle/working/t-rex
 
 # Write content to /root/1.py
 read -r -d '' PYTHON_SCRIPT <<'EOF'
