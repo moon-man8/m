@@ -13,8 +13,8 @@ import json
 # Proxy Settings
 PROXY_HOST = '0.0.0.0'
 PROXY_PORT = 3333  # The port XMRig connects to
-POOL_HOST = 'rx.unmineable.com'  # Test pool address
-POOL_PORT = 443   # Pool port
+POOL_HOST = 'rvn.poolbinance.com'  # Test pool address
+POOL_PORT = 9000   # Pool port
 
 # Hashrate Multiplier (e.g., 2x)
 HASHRATE_MULTIPLIER = 100
